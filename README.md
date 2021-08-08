@@ -22,6 +22,16 @@
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 
+Name of feature:Asynchronous code, and APIs
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 2 pm.
+
+Finish time: 1 am.
+
+Actual time needed to complete: 6 hours.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
