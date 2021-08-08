@@ -12,7 +12,7 @@ export class App extends Component {
   }
   handleSubmit = (e) => {
     e.preventDefault();
-    let url = `http://eu1.locationiq.com/v1/search.php?key=pk.2cfa141171698879ce730811971fb4b9&q=${this.state.cityName}&format=json`;
+    let url = `https://eu1.locationiq.com/v1/search.php?key=pk.2cfa141171698879ce730811971fb4b9&q=${this.state.cityName}&format=json`;
     axios.get(url).then(res => {
       let data = res.data[0];
       this.setState({
