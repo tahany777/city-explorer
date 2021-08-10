@@ -1,15 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 
 export class City extends Component {
   render() {
     return (
-      <div style={{ margin: '2em'}}>
-        <h2>{this.props.city}</h2>
-        <h3 >{this.props.lat}</h3>
-        <h3>{this.props.lon}</h3>
-      </div>
-    )
+      <Container>
+        <Row>
+          <Col style={{display: this.props.dis, textAlign: 'center' }}>
+              <h3>City Name: {this.props.city}</h3>
+              <h4>Lat: {this.props.lat}</h4>
+              <h4>Lon: {this.props.lon}</h4>
+          </Col>
+        </Row>
+      </Container>
+    );
   }
 }
-
-export default City
+export default City;
