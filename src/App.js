@@ -3,7 +3,17 @@ import React, { Component } from "react";
 import City from "./component/City";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Modal, Form } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  Form,
+  Image,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
+import Weather from "./component/Weather";
+
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -11,20 +21,28 @@ export class App extends Component {
       city: "",
       cityName: "",
       show1: "none",
+      show2: "none",
       lat: "0.0",
       lon: "0.0",
-      show: false.request,
+      show: false,
+      sho: false,
+      date: "",
+      desc: "",
+      msg: "",
     };
   }
+
   handleChange = (e) => {
     this.setState({
       city: e.target.value,
     });
     console.log(this.state.city);
   };
+
   handleClose = () => {
     this.setState({
       show: false,
+      sho: false,
     });
   };
 
@@ -42,6 +60,7 @@ export class App extends Component {
           lon: data.lon,
           show1: "block",
         });
+        this.showWeather(this.state.cityName);
       })
       .catch((err) => {
         if (err.request) {
@@ -51,11 +70,36 @@ export class App extends Component {
           console.log(err.request);
         }
       });
-    console.log(this.state.cityName);
+  };
+
+  showWeather = (cityN) => {
+    // eslint-disable-next-line
+    let url1 = `http://localhost:8000/weather/${cityN.split(",")[0]}`;
+    axios
+      .get(url1)
+      .then((res) => {
+        let data = res.data;
+        this.setState({
+          date: data.map((el) => `${el.date} , `),
+          desc: data.map((el) => `${el.description} , `),
+          show2: "block",
+        });
+      })
+      .catch((err) => {
+        if (err.request) {
+          this.setState({
+            date: "",
+            desc: "",
+            sho: true,
+            show2: "none",
+          });
+          console.log(err.request);
+        }
+      });
   };
   render() {
     return (
-      <div>
+      <Container style={{fontFamily: "'Georama', sans-serif"}}>
         <Modal size="lg" show={this.state.show}>
           <Modal.Header closeButton onClick={this.handleClose}>
             <Modal.Title>Error</Modal.Title>
@@ -67,39 +111,64 @@ export class App extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Form
-          onSubmit={(e) => {
-            this.handleSubmit(e);
-          }}
-        >
-          <Form.Group className="m-3" controlId="formBasicPassword">
-            <Form.Label><h1>City Explorer</h1></Form.Label>
-            <Form.Control
-              style={{ margin: '1em' }}
-              size="lg"
-              type="text"
-              placeholder="Enter a City"
-              onChange={(e) => {
-                this.handleChange(e);
+        <Modal size="lg" show={this.state.sho}>
+          <Modal.Header closeButton onClick={this.handleClose}>
+            <Modal.Title>Error</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>No Weather available</Modal.Body>
+          <Modal.Footer>
+            <Button style={{backgroundColor: '#FFC93C', borderColor: '#FFC93C'}} onClick={this.handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Row style={{color: '#99154E'}}>
+          <Col>
+            <Form style={{textAlign: 'center'}}
+              onSubmit={(e) => {
+                this.handleSubmit(e);
               }}
+            >
+              <Form.Group className="m-3" controlId="formBasicPassword">
+                <Form.Label>
+                  <h2 style={{ margin: "1em 0 0.5em 0", textAlign: 'center' }}>CITY EXPLORER</h2>
+                </Form.Label>
+                <Form.Control
+                  style={{textAlign: 'center' }}
+                  size="lg"
+                  type="text"
+                  placeholder="Enter a City"
+                  onChange={(e) => {
+                    this.handleChange(e);
+                  }}
+                />
+              </Form.Group>
+              <Button style={{ margin: "2em", backgroundColor: '#99154E', borderColor: '#99154E'}} type="submit">
+                Search
+              </Button>
+            </Form>
+            <City
+              style={{ display: this.state.show1, margin: "2em" }}
+              dis={this.state.show1}
+              city={this.state.cityName}
+              lat={this.state.lat}
+              lon={this.state.lon}
             />
-          </Form.Group>
-          <Button style={{ margin: '2em' }} variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-        <City
-          style={{ display: this.state.show1,  margin: '2em'}}
-          city={this.state.cityName}
-          lat={this.state.lat}
-          lon={this.state.lon}
-        />
-        <img
-          style={{ display: this.state.show1, margin: '0 auto'}}
-          src={`https://maps.locationiq.com/v3/staticmap?key=pk.2cfa141171698879ce730811971fb4b9&center=${this.state.lat},${this.state.lon}&zoom=1-18&markers=45.5165,-122.6764|icon:large-blue-cutout`}
-          alt=""
-        />
-      </div>
+            <Weather
+              dis={this.state.show2}
+              style={{margin: "0 auto"}}
+              date={this.state.date}
+              desc={this.state.desc}
+            />
+            <Image
+              style={{ display: this.state.show1, margin: "0 auto", height: '40%', borderColor: '#99154E', borderWidth: '2px'}}
+              src={`https://maps.locationiq.com/v3/staticmap?key=pk.2cfa141171698879ce730811971fb4b9&center=${this.state.lat},${this.state.lon}&zoom=1-18&markers=45.5165,-122.6764|icon:large-blue-cutout`}
+              fluid
+              thumbnail
+            />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
