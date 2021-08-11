@@ -30,7 +30,7 @@ Start time: 2 pm.
 
 Finish time: 1 am.
 
-Actual time needed to complete: 6 hours.
+Actual time needed to complete: 4 hours.
 
 # Getting Started with Create React App
 

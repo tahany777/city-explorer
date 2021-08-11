@@ -13,6 +13,8 @@ import {
   Col,
 } from "react-bootstrap";
 import Weather from "./component/Weather";
+import Movies from "./component/Movies";
+require('dotenv').config();
 
 export class App extends Component {
   constructor(props) {
@@ -29,6 +31,9 @@ export class App extends Component {
       date: "",
       desc: "",
       msg: "",
+      title: "",
+      vote: "",
+      img: ""
     };
   }
 
@@ -61,6 +66,7 @@ export class App extends Component {
           show1: "block",
         });
         this.showWeather(this.state.cityName);
+        this.showMovies(this.state.cityName);
       })
       .catch((err) => {
         if (err.request) {
@@ -72,7 +78,7 @@ export class App extends Component {
       });
   };
 
-  showWeather = (cityN) => {
+  /*showWeather = (cityN) => {
     // eslint-disable-next-line
     let url1 = `http://localhost:8000/weather/${cityN.split(",")[0]}`;
     axios
@@ -96,7 +102,47 @@ export class App extends Component {
           console.log(err.request);
         }
       });
+  };*/
+  showWeather = () => {
+    // eslint-disable-next-line
+    let url1 = `http://localhost:8000/weather/${this.state.lat}/${this.state.lon}`;
+    console.log(url1);
+    axios
+      .get(url1)
+      .then((res) => {
+        let data = res.data;
+        this.setState({
+          date: data.map((el) => `${el.date} , `),
+          desc: data.map((el) => `${el.description} , `),
+          show2: "block",
+        });
+      })
+      .catch((err) => {
+        if (err.request) {
+          this.setState({
+            date: "",
+            desc: "",
+            sho: true,
+            show2: "none",
+          });
+        }
+      });
   };
+  showMovies = () => {
+    let url1 = `http://localhost:8000/movies?query=${this.state.city}`;
+    console.log(url1);
+    axios.get(url1).then(res => {
+      let data = res.data;
+      console.log(data)
+      this.setState({
+        title: data.map((el) => `${el.title} `),
+        vote: data.map((el) => `${el.vot}`),
+        img: data.map((el) => `${el.img}`),
+      });
+    }).catch(err => {
+      console.log(err);
+    });
+  }
   render() {
     return (
       <Container style={{fontFamily: "'Georama', sans-serif"}}>
@@ -160,6 +206,8 @@ export class App extends Component {
               date={this.state.date}
               desc={this.state.desc}
             />
+            
+            <Movies title={this.state.title} vote={this.props.vote} img={this.props.img} />
             <Image
               style={{ display: this.state.show1, margin: "0 auto", height: '40%', borderColor: '#99154E', borderWidth: '2px'}}
               src={`https://maps.locationiq.com/v3/staticmap?key=pk.2cfa141171698879ce730811971fb4b9&center=${this.state.lat},${this.state.lon}&zoom=1-18&markers=45.5165,-122.6764|icon:large-blue-cutout`}
