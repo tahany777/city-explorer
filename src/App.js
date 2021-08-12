@@ -31,9 +31,7 @@ export class App extends Component {
       date: "",
       desc: "",
       msg: "",
-      title: "",
-      vote: "",
-      img: ""
+      movies: []
     };
   }
 
@@ -129,15 +127,13 @@ export class App extends Component {
       });
   };
   showMovies = () => {
-    let url1 = `http://localhost:8000/movies?query=${this.state.city}`;
+    let url1 = `http://localhost:8000/movies/${this.state.city}`;
     console.log(url1);
     axios.get(url1).then(res => {
       let data = res.data;
       console.log(data)
       this.setState({
-        title: data.map((el) => `${el.title} `),
-        vote: data.map((el) => `${el.vot}`),
-        img: data.map((el) => `${el.img}`),
+        movies: data
       });
     }).catch(err => {
       console.log(err);
@@ -206,10 +202,18 @@ export class App extends Component {
               date={this.state.date}
               desc={this.state.desc}
             />
+
+            {this.state.movies && <> {this.state.movies.map(movie => (
+            <Movies
+            key={movie.key} 
+            title={movie.title} 
+            vote={movie.vot} 
+            img={movie.img} 
+            />
+            ))}</> }
             
-            <Movies title={this.state.title} vote={this.props.vote} img={this.props.img} />
             <Image
-              style={{ display: this.state.show1, margin: "0 auto", height: '40%', borderColor: '#99154E', borderWidth: '2px'}}
+              style={{ display: this.state.show1, margin: "0 auto", borderColor: '#99154E', borderWidth: '2px'}}
               src={`https://maps.locationiq.com/v3/staticmap?key=pk.2cfa141171698879ce730811971fb4b9&center=${this.state.lat},${this.state.lon}&zoom=1-18&markers=45.5165,-122.6764|icon:large-blue-cutout`}
               fluid
               thumbnail

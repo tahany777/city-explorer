@@ -4,9 +4,10 @@ export class Movies extends Component {
   render() {
     return (
       <div>
-        {this.props.title}
-        {this.props.vote}
-        {this.props.img}
+        <h1>{this.props.key}</h1>
+        <h2>{this.props.title}</h2>
+        <h3>{this.props.vote}</h3>
+        <img src={this.props.img} alt=""/>
       </div>
     )
   }
