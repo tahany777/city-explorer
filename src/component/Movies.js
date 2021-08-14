@@ -4,7 +4,7 @@ import { Card } from 'react-bootstrap';
 export class Movies extends Component {
   render() {
     return (
-    <div style={{ width: '18rem', display: 'felx' }}>
+    <div style={{ width: '18rem', display: 'felx', margin: '0 auto' }}>
       <Card>
       <Card.Img variant="top" src={this.props.img} />
       <Card.Body>
