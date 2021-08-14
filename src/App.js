@@ -28,9 +28,8 @@ export class App extends Component {
       lon: "0.0",
       show: false,
       sho: false,
-      date: "",
-      desc: "",
       msg: "",
+      weather: [],
       movies: []
     };
   }
@@ -110,8 +109,7 @@ export class App extends Component {
       .then((res) => {
         let data = res.data;
         this.setState({
-          date: data.map((el) => `${el.date} , `),
-          desc: data.map((el) => `${el.description} , `),
+          weather: data,
           show2: "block",
         });
       })
@@ -196,16 +194,18 @@ export class App extends Component {
               lat={this.state.lat}
               lon={this.state.lon}
             />
+            {this.state.weather && <> {this.state.weather.map(el => (
             <Weather
               dis={this.state.show2}
               style={{margin: "0 auto"}}
-              date={this.state.date}
-              desc={this.state.desc}
+              key={el.city_name}
+              date={el.date}
+              desc={el.description}
             />
-
+            ))} </>}
             {this.state.movies && <> {this.state.movies.map(movie => (
             <Movies
-            key={movie.key} 
+            id={movie.key} 
             title={movie.title} 
             vote={movie.vot} 
             img={movie.img} 
