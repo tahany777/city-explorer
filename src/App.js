@@ -102,7 +102,7 @@ export class App extends Component {
   };*/
   showWeather = () => {
     // eslint-disable-next-line
-    let url1 = `http://localhost:8000/weather/${this.state.lat}/${this.state.lon}`;
+    let url1 = `https://city-explorer777.herokuapp.com/weather/${this.state.lat}/${this.state.lon}`;
     console.log(url1);
     axios
       .get(url1)
@@ -125,7 +125,7 @@ export class App extends Component {
       });
   };
   showMovies = () => {
-    let url1 = `http://localhost:8000/movies/${this.state.city}`;
+    let url1 = `https://city-explorer777.herokuapp.com/movies/${this.state.city}`;
     console.log(url1);
     axios.get(url1).then(res => {
       let data = res.data;
