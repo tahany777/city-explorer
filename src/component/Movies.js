@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
-import { Card } from 'react-bootstrap';
+import Movie from './Movie';
 
 export class Movies extends Component {
   render() {
     return (
-    <div style={{ width: '18rem', display: 'felx', margin: '0 auto' }}>
-      <Card>
-      <Card.Img variant="top" src={this.props.img} />
-      <Card.Body>
-        <Card.Title>{this.props.id}{this.props.title}</Card.Title>
-        <Card.Text>
-          Votes : {this.props.vote}
-        </Card.Text>
-      </Card.Body>
-    </Card>
-    </div>
-    
+      <Movie img={this.props.img} id= {this.props.id} title= {this.props.title} vote={this.props.vote}/>
     )
   }
 }
